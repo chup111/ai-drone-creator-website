@@ -1,8 +1,6 @@
 {
+  "name": "ai-drone-creator-website",
   "scripts": {
-    "start": "npx serve@latest . -l $PORT"
-  },
-  "dependencies": {
-    "serve": "^14.0.0"
+    "start": "node server.js"
   }
 }
