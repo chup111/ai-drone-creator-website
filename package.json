@@ -1,6 +1,0 @@
-{
-  "name": "ai-drone-creator-website",
-  "scripts": {
-    "start": "node server.js"
-  }
-}
