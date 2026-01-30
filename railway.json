@@ -5,6 +5,7 @@
   },
   "deploy": {
     "startCommand": "python -m http.server $PORT",
-    "healthcheckPath": "/"
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 30
   }
 }
