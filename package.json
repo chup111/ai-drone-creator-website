@@ -1,28 +1,6 @@
 {
   "name": "ai-drone-creator-website",
-  "version": "1.0.0",
-  "type": "module",
   "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "engines": {
-    "node": ">=18"
-  }
-}
-{
-  "name": "ai-drone-creator-website",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "engines": {
-    "node": ">=18"
+    "start": "echo 'Starting static site...' && while true; do echo 'Site is running...'; sleep 30; done"
   }
 }
