@@ -1,0 +1,39 @@
+# AI Drone Creator Website Configuration
+:8080
+
+# Корневая директория
+root * /app
+
+# Раздаем статические файлы
+file_server {
+    hide .git
+    hide Caddyfile
+}
+
+# Маршруты
+handle {
+    # Health check для Railway
+    @health path /health
+    handle @health {
+        respond 200 {
+            body "{\"status\":\"healthy\",\"service\":\"AI Drone Creator Website\"}"
+        }
+    }
+
+    # Главная страница
+    @index {
+        file index.html
+    }
+    
+    # Если запрашивают корень или index.html
+    handle {
+        try_files {path} {path}/ /index.html
+        file_server
+    }
+}
+
+# Логирование
+log {
+    output stdout
+    format console
+}
