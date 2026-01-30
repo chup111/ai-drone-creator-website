@@ -1,24 +1,70 @@
-:8080
-
-# Указываем явно корневую директорию
-root * /usr/share/caddy
-
-# Раздаём статические файлы
-file_server {
-    hide .git
-    hide Caddyfile
-}
-
-# Health check endpoint
-handle /health {
-    respond 200 {
-        body "{\"status\":\"healthy\",\"service\":\"AI Drone Creator Website\"}"
-        header Content-Type "application/json"
+# Caddyfile для AI Drone Creator
+# Основной домен
+ai-drone-creator-website.up.railway.app {
+    # Отдаём статические файлы из текущей директории
+    root * /app
+    file_server {
+        hide .git
+        hide .env
+        hide Caddyfile
+    }
+    
+    # Настройка кэширования для статических файлов
+    header {
+        Cache-Control "public, max-age=3600"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    
+    # Обработка 404
+    @notFound {
+        not file
+    }
+    handle @notFound {
+        rewrite * /index.html
+        file_server {
+            try_files {path} /index.html
+        }
+    }
+    
+    # Сжатие
+    encode gzip zstd
+    
+    # Логирование
+    log {
+        output stderr
+        format console
     }
 }
 
-# Все остальные запросы на index.html
-handle {
-    try_files {path} /index.html
-    file_server
+# Бэкенд API
+ai-drone-creator-backend-1-production.up.railway.app {
+    # Прокси к бэкенду на порту 8080
+    reverse_proxy * localhost:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+    
+    # Логирование
+    log {
+        output stderr
+        format console
+    }
+}
+
+# Health check endpoint
+:8080 {
+    handle /health {
+        respond "{\"status\":\"healthy\",\"timestamp\":\"2006-01-02T15:04:05Z07:00\",\"service\":\"ai-drone-creator\"}" 200 {
+            Content-Type "application/json"
+        }
+    }
+    
+    # Если запрос не /health, возвращаем 404
+    handle {
+        respond "Not Found" 404
+    }
 }
