@@ -1,0 +1,9 @@
+{
+  "name": "ai-drone-creator-website",
+  "scripts": {
+    "start": "npx serve@latest . -l $PORT --single"
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+}
